@@ -11,30 +11,23 @@ def menu():
  print('0 - SAIR\n')
 
 def cadastro():
- try:
-   codigo =input("Insira o código do produto: ")
-   if(codigo.isnumeric() == False):
+   codigo =input("Insira o código do produto: ").strip()
+   if not(codigo.isnumeric()):
     print('Informe um número válido!')
     menu()
    else:
-    nome = input("Insira o produto: ")
-    
+    nome = input("Insira o produto: ").strip()
     dados_produtos = {
     'cod': codigo,
     'produto': nome.upper()
     }
     dados_all.append(dados_produtos)
-    print(dados_all)
+    #print(dados_all)
     print('Cadastro realizado com sucesso!')
- except ValueError:
-   print('Informe apenas números')
-
    return menu()
 #
 def listar():
  if (len(dados_all)> 0):
-   #for i, item in enumerate(dados_all):
-    #print(i, item);
     for item in dados_all:
       print(item)
     return True    
@@ -43,48 +36,35 @@ def listar():
     return False
 #
 def excluir():
-  if listar() == True: 
+  if listar():
    op = input('Qual produto deseja excluir?\n')
-
-   try:
-    for i, dado in enumerate(dados_all):
-      if ((op == dado['cod']) or (op.upper() == dado['produto'])):
+   for i, dado in enumerate(dados_all):
+    if ((op == dado['cod']) or (op.upper() == dado['produto'])):
        dados_all.remove(dado)
        print('produto excluído com sucesso!')
-   except SystemError:
-     print('Entre em contato com o suporte')
-     menu()
+    menu()
   else:
-    #print('Lote inexistente')
     return False
 #
 def editar():
-  if listar() == True: 
-   op = input('Qual produto deseja editar?\n')
-  try:
-    for i, dado in enumerate(dados_all):
-      if((op == dado['cod']) or (op.upper() == dado['produto'])):
-       n_cod = input(print('1 - Editar código do produto:'))
-       n_prod = input(print('2 - Editar produto:'))
-      #if((op == dado['cod']) or (op.upper() == dado['produto'])):
-       #n_cod = input(print('1 - Editar código do produto:'))
-       #n_prod = input(print('2 - Editar produto:'))
-       if (n_cod !=0) or (n_prod!= ''):
-         dado['cod'] = n_cod
-         dado['produto'] = n_prod
-
-         print('Alteração realizada com sucesso!')
-         menu()
+ if listar(): 
+  op = input('Qual produto deseja editar?\n')
+  for i, dado in enumerate(dados_all):
+    if(op == dado['cod']):
+       n_cod = input('1 - Novo código do produto:').strip()
+       if not n_cod.isnumeric():
+         print("Informe apenas números!")
        else:
-         print('Verifique os campos')
-  except SystemError:
-     print('Entre em contato com o suporte')
-  else:
-    print('Não há produtos')
-    menu()
-
-
-
-
-  
-
+          dado['cod'] = n_cod
+          print('Alteração realizada com sucesso!')
+         
+    elif(op.upper() == dado['produto']):
+       n_prod = input('2 - Novo produto:').strip()
+       if (n_prod!= ''):
+        dado['produto'] = n_prod
+        print('Alteração realizada com sucesso!')
+        menu()
+       else:
+         print('Produto não encontrado.')
+         return False 
+       
