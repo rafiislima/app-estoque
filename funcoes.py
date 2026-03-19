@@ -45,17 +45,18 @@ def listar():
 def excluir():
   if listar() == True: 
    op = input('Qual produto deseja excluir?\n')
-   
+
    try:
     for i, dado in enumerate(dados_all):
-      if (op == dado['cod']):
+      if ((op == dado['cod']) or (op.upper() == dado['produto'])):
        dados_all.remove(dado)
        print('produto excluído com sucesso!')
    except SystemError:
      print('Entre em contato com o suporte')
+     menu()
   else:
     #print('Lote inexistente')
-    menu()  
+    return False
 #
 def editar():
   if listar() == True: 
@@ -63,8 +64,11 @@ def editar():
   try:
     for i, dado in enumerate(dados_all):
       if((op == dado['cod']) or (op.upper() == dado['produto'])):
-       n_cod = int(input(print('1 - Editar código do produto:')))
+       n_cod = input(print('1 - Editar código do produto:'))
        n_prod = input(print('2 - Editar produto:'))
+      #if((op == dado['cod']) or (op.upper() == dado['produto'])):
+       #n_cod = input(print('1 - Editar código do produto:'))
+       #n_prod = input(print('2 - Editar produto:'))
        if (n_cod !=0) or (n_prod!= ''):
          dado['cod'] = n_cod
          dado['produto'] = n_prod
